@@ -33,7 +33,6 @@ Hier den One-Pager verlinken (z. B. PDF oder Dokument)
 # Ordnerstruktur
 
 /assets
-icons/
 images/
 
 /components
@@ -57,3 +56,19 @@ AuthContext.tsx
 /services
 storage.ts
 security.ts
+
+## Starten der App
+
+```bash
+npm install
+npx expo start
+```
+
+oder
+
+(Benötigt die Android SDK und Java)
+
+```bash
+npm install
+npx expo run:android
+```
