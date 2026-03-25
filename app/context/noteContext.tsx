@@ -17,7 +17,7 @@ interface NoteContextType {
   removeNote: (id: string) => void;
 }
 
-const VociContext = createContext<NoteContextType | undefined>(undefined);
+const NoteContext = createContext<NoteContextType | undefined>(undefined);
 
 export function NoteProvider({ children }: { children: ReactNode }) {
   let [noteList, setNoteList] = useState<Note[]>([
@@ -63,9 +63,9 @@ export function NoteProvider({ children }: { children: ReactNode }) {
     let jsonList = JSON.stringify(noteList);
     try {
       await noteStorage.setItem(jsonList);
-      console.log("Vocis gespeichert");
+      console.log("Notes saved");
     } catch (err) {
-      console.log("Fehler beim Speichern der Liste", err);
+      console.log("Error when saving the list", err);
     }
   }
 
@@ -78,16 +78,16 @@ export function NoteProvider({ children }: { children: ReactNode }) {
   }, [noteList]);
 
   return (
-    <VociContext.Provider value={{ noteList, saveNote, removeNote }}>
+    <NoteContext.Provider value={{ noteList, saveNote, removeNote }}>
       {children}
-    </VociContext.Provider>
+    </NoteContext.Provider>
   );
 }
 
 export function useNote() {
-  const context = useContext(VociContext);
+  const context = useContext(NoteContext);
   if (!context) {
-    throw new Error("useNote muss innerhalb von VociProvider verwendet werden");
+    throw new Error("useNote muss innerhalb von noteProvider verwendet werden");
   }
   return context;
 }

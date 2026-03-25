@@ -1,16 +1,29 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { FlatList, Pressable, StyleSheet, View } from "react-native";
+import { Redirect, useRouter } from "expo-router";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { DisplayNote } from "./components/listNoteElement";
+import { useAuth } from "./context/AuthContext";
 import { useNote } from "./context/noteContext";
 
 export default function Index() {
   const noteList = useNote().noteList;
   const router = useRouter();
+  const authContext = useAuth();
+
+  if (authContext.isLoading) {
+    return (
+      <View style={style.view}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (!authContext.hasPin) return <Redirect href="/setup" />;
+  if (authContext.isLocked) return <Redirect href="/login" />;
+
   function addNote() {
     router.push("/addNote");
   }
-
   return (
     <View style={style.view}>
       <FlatList
@@ -19,7 +32,7 @@ export default function Index() {
         keyExtractor={(item) => item.id}
       ></FlatList>
       <Pressable style={style.button} onPress={addNote}>
-        <Ionicons name="create-outline" size={30} />
+        <Ionicons name="create-outline" size={30} color={"#fff"} />
       </Pressable>
     </View>
   );
