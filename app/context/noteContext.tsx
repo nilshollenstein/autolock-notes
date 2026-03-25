@@ -5,6 +5,7 @@ import Note from "../models/note";
 interface NoteContextType {
   noteList: Note[];
   saveNote: (note: Note) => void;
+  removeNote: (id: string) => void;
 }
 
 const VociContext = createContext<NoteContextType | undefined>(undefined);
@@ -29,8 +30,12 @@ export function NoteProvider({ children }: { children: ReactNode }) {
     });
   }
 
+  function removeNote(id: string) {
+    setNoteList((prev) => prev.filter((prevNote) => prevNote.id !== id));
+  }
+
   return (
-    <VociContext.Provider value={{ noteList, saveNote }}>
+    <VociContext.Provider value={{ noteList, saveNote, removeNote }}>
       {children}
     </VociContext.Provider>
   );
