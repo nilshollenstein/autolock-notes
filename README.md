@@ -1,50 +1,59 @@
-# Welcome to your Expo app 👋
+# README & Pitch
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## App-Idee
 
-## Get started
+Eine Notizen-App mit integriertem Auto-Lock. Inhalte werden automatisch gesperrt, wenn das Gerät nicht aktiv genutzt wird oder die App in den Hintergrund wechselt.
 
-1. Install dependencies
+## Zielgruppe
 
-   ```bash
-   npm install
-   ```
+Personen, die schnell Notizen erstellen möchten und gleichzeitig Wert auf Datenschutz legen, z. B. Studierende oder Berufstätige.
 
-2. Start the app
+## Hauptfunktionen
 
-   ```bash
-   npx expo start
-   ```
+- Notizen erstellen, bearbeiten und löschen
+- Automatischer Lock bei Inaktivität oder App-Wechsel
+- PIN-basierter Zugriffsschutz
+- Übersicht aller Notizen
 
-In the output, you'll find options to open the app in a
+## One-Pager
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Hier den One-Pager verlinken (z. B. PDF oder Dokument)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Tech-Stack
 
-## Get a fresh project
+- React Native (Expo)
+- TypeScript
+- React Navigation (Stack)
+- AsyncStorage (Notizen)
+- SecureStore (PIN)
+- expo-crypto (Hashing)
 
-When you're ready, run:
+---
 
-```bash
-npm run reset-project
-```
+# Ordnerstruktur
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+/assets
+icons/
+images/
 
-## Learn more
+/components
+AppHeader.tsx
+NoteListItem.tsx
+NoteForm.tsx
+PrimaryButton.tsx
 
-To learn more about developing your project with Expo, look at the following resources:
+/app
+SetupScreen.tsx
+LoginScreen.tsx
+NotesOverviewScreen.tsx
+CreateNoteScreen.tsx
+EditNoteScreen.tsx
+index.tsx
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+/context
+NotesContext.tsx
+AuthContext.tsx
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+/services
+storage.ts
+security.ts
