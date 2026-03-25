@@ -1,21 +1,37 @@
 import { StyleSheet, Text, View } from "react-native";
+
 import Note from "../models/note";
 
 export function displayNote(note: Note) {
   return (
-    <View style={style.view}>
-      <Text>{note.title}</Text>
-      <Text>{note.text}</Text>
+    <View style={styles.item}>
+      <Text style={styles.title} numberOfLines={1}>
+        {note.title}
+      </Text>
+      <Text style={styles.preview} numberOfLines={1}>
+        {note.text}
+      </Text>
     </View>
   );
 }
 
-const style = StyleSheet.create({
-  view: {
-    margin: 15,
-    backgroundColor: "#ffffff",
-    padding: 15,
-    borderRadius: 10,
-    elevation: 10,
+const styles = StyleSheet.create({
+  item: {
+    width: "100%",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cfcfcf",
+    backgroundColor: "transparent",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#222222",
+    marginBottom: 2,
+  },
+  preview: {
+    fontSize: 16,
+    color: "#666666",
   },
 });
