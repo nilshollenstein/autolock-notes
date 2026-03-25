@@ -36,24 +36,22 @@ Hier den One-Pager verlinken (z. B. PDF oder Dokument)
 images/
 
 /components
-AppHeader.tsx
-NoteListItem.tsx
-NoteForm.tsx
+ListNoteElement.tsx
+noteDetail.tsx
 PrimaryButton.tsx
 
 /app
 SetupScreen.tsx
 LoginScreen.tsx
-NotesOverviewScreen.tsx
-EditNoteScreen.tsx
 index.tsx
+editNote.tsx
+addNote.tsx
 
 /context
-NotesContext.tsx
+noteContext.tsx
 AuthContext.tsx
 
 /services
-storage.ts
 security.ts
 
 ## Starten der App

@@ -157,19 +157,18 @@ type SessionState = {
   SetupScreen
   LoginScreen
   Index
-  EditNoteScreen
+  EditNote
+  AddNote
 
 /components
-  NoteForm
+  NoteDetail
   NoteListItem
   PinInput
-  Buttons
 
 /context
   NotesContext
   AuthContext
 
 /services
-  storage
   security
 ```
