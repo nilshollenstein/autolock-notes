@@ -2,7 +2,11 @@ import { StyleSheet, Text, View } from "react-native";
 
 import Note from "../models/note";
 
-export function displayNote(note: Note) {
+interface DisplayNoteProps {
+  note: Note;
+}
+
+export function DisplayNote({ note }: DisplayNoteProps) {
   return (
     <View style={styles.item}>
       <Text style={styles.title} numberOfLines={1}>

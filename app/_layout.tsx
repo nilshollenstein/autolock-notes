@@ -21,6 +21,12 @@ export default function RootLayout() {
             title: "Notitzen",
           }}
         />
+        <Stack.Screen
+          name="addNote"
+          options={{
+            title: "Notitz hinzufügen",
+          }}
+        />
       </Stack>
     </NoteProvider>
   );

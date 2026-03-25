@@ -45,7 +45,6 @@ PrimaryButton.tsx
 SetupScreen.tsx
 LoginScreen.tsx
 NotesOverviewScreen.tsx
-CreateNoteScreen.tsx
 EditNoteScreen.tsx
 index.tsx
 

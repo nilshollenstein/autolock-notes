@@ -1,24 +1,38 @@
 import * as Crypto from "expo-crypto";
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import Note from "../models/note";
 
 interface NoteContextType {
   noteList: Note[];
+  saveNote: (note: Note) => void;
 }
 
 const VociContext = createContext<NoteContextType | undefined>(undefined);
 
 export function NoteProvider({ children }: { children: ReactNode }) {
-  let noteList = [
+  let [noteList, setNoteList] = useState<Note[]>([
     {
       id: Crypto.randomUUID(),
       title: "TestNote",
-      text: "TestNotitz für den Start der App",
     },
-  ];
+  ]);
+
+  function saveNote(note: Note) {
+    setNoteList((prev) => {
+      const existingNote = prev.find((n) => n.id === note.id);
+
+      if (existingNote) {
+        return prev.map((n) => (n.id === note.id ? note : n));
+      }
+
+      return [...prev, note];
+    });
+  }
 
   return (
-    <VociContext.Provider value={{ noteList }}>{children}</VociContext.Provider>
+    <VociContext.Provider value={{ noteList, saveNote }}>
+      {children}
+    </VociContext.Provider>
   );
 }
 

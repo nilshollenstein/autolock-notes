@@ -1,19 +1,24 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, View } from "react-native";
-import { displayNote } from "./components/note";
+import { DisplayNote } from "./components/listNoteElement";
 import { useNote } from "./context/noteContext";
 
 export default function Index() {
-  let noteList = useNote().noteList;
+  const noteList = useNote().noteList;
+  const router = useRouter();
+  function addNote() {
+    router.push("/addNote");
+  }
 
   return (
     <View style={style.view}>
       <FlatList
         data={noteList}
-        renderItem={({ item }) => displayNote(item)}
+        renderItem={({ item }) => <DisplayNote note={item} />}
         keyExtractor={(item) => item.id}
       ></FlatList>
-      <Pressable style={style.button}>
+      <Pressable style={style.button} onPress={addNote}>
         <Ionicons name="create-outline" size={30} />
       </Pressable>
     </View>

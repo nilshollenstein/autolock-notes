@@ -156,8 +156,7 @@ type SessionState = {
 /app
   SetupScreen
   LoginScreen
-  NotesOverviewScreen
-  CreateNoteScreen
+  Index
   EditNoteScreen
 
 /components
