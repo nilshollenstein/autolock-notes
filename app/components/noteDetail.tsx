@@ -1,40 +1,24 @@
-import * as Crypto from "expo-crypto";
-import { useState } from "react";
-import { Alert, StyleSheet, TextInput, View } from "react-native";
-import Note from "../models/note";
+import { StyleSheet, TextInput, View } from "react-native";
 
 interface NoteDetailProps {
-  initialNote?: Note;
-  onSave: (note: Note) => void;
+  title: string;
+  text: string;
+  onTitleChange: (value: string) => void;
+  onTextChange: (value: string) => void;
 }
 
-export default function NoteDetail({ initialNote, onSave }: NoteDetailProps) {
-  const [title, setTitle] = useState(initialNote?.title ?? "");
-  const [text, setText] = useState(initialNote?.text ?? "");
-  const [noteId] = useState(initialNote?.id ?? Crypto.randomUUID());
-
-  function handleSave() {
-    if (!title.trim()) {
-      Alert.alert("Title has to be filled out");
-      return;
-    }
-
-    const note: Note = {
-      id: noteId,
-      title: title.trim(),
-      text: text.trim() || undefined,
-    };
-
-    onSave(note);
-  }
-
+export default function NoteDetail({
+  title,
+  text,
+  onTitleChange,
+  onTextChange,
+}: NoteDetailProps) {
   return (
     <View style={styles.container}>
       <TextInput
         placeholder="Title"
         value={title}
-        onChangeText={setTitle}
-        onBlur={handleSave}
+        onChangeText={onTitleChange}
         style={styles.titleInput}
         placeholderTextColor="#888"
       />
@@ -44,8 +28,7 @@ export default function NoteDetail({ initialNote, onSave }: NoteDetailProps) {
         value={text}
         multiline
         textAlignVertical="top"
-        onChangeText={setText}
-        onBlur={handleSave}
+        onChangeText={onTextChange}
         style={styles.textInput}
         placeholderTextColor="#888"
       />
@@ -75,7 +58,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#000",
     paddingTop: 12,
-    paddingBottom: 12,
     minHeight: 200,
   },
 });

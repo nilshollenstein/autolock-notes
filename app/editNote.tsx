@@ -1,31 +1,34 @@
-import * as Crypto from "expo-crypto";
-import { useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import NoteDetail from "./components/noteDetail";
 import { useNote } from "./context/noteContext";
 
-export default function AddNote() {
+export default function EditNote() {
   const navigation = useNavigation();
-  const { saveNote } = useNote();
 
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
-  const [noteId] = useState(Crypto.randomUUID());
+  const { noteList, saveNote } = useNote();
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  const note = noteList.find((n) => n.id === id);
+
+  const [title, setTitle] = useState(note?.title ?? "");
+  const [text, setText] = useState(note?.text ?? "");
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("beforeRemove", () => {
+      if (!note) return;
       if (!title.trim()) return;
 
       saveNote({
-        id: noteId,
+        id: note.id,
         title: title.trim(),
         text: text.trim() || undefined,
       });
     });
 
     return unsubscribe;
-  }, [navigation, title, text, noteId, saveNote]);
+  }, [navigation, note, title, text, saveNote]);
 
   return (
     <View style={{ flex: 1 }}>

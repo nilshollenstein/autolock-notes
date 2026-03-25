@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { useRouter } from "expo-router";
 import Note from "../models/note";
 
 interface DisplayNoteProps {
@@ -7,14 +8,22 @@ interface DisplayNoteProps {
 }
 
 export function DisplayNote({ note }: DisplayNoteProps) {
+  const router = useRouter();
+
+  function onPress() {
+    router.push(`/editNote?id=${note.id}`);
+  }
+
   return (
     <View style={styles.item}>
-      <Text style={styles.title} numberOfLines={1}>
-        {note.title}
-      </Text>
-      <Text style={styles.preview} numberOfLines={1}>
-        {note.text}
-      </Text>
+      <TouchableOpacity onPress={onPress}>
+        <Text style={styles.title} numberOfLines={1}>
+          {note.title}
+        </Text>
+        <Text style={styles.preview} numberOfLines={1}>
+          {note.text}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }

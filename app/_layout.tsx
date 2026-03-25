@@ -18,13 +18,19 @@ export default function RootLayout() {
         <Stack.Screen
           name="index"
           options={{
-            title: "Notitzen",
+            title: "Notes",
           }}
         />
         <Stack.Screen
           name="addNote"
           options={{
-            title: "Notitz hinzufügen",
+            title: "Add Note",
+          }}
+        />
+        <Stack.Screen
+          name="editNote"
+          options={{
+            title: "Edit Note",
           }}
         />
       </Stack>
