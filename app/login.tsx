@@ -46,8 +46,8 @@ export default function login() {
           />
         </View>
 
-        <Pressable onPress={login}>
-          <Text>Login</Text>
+        <Pressable style={styles.button} onPress={login}>
+          <Text style={styles.buttonText}>Login</Text>
         </Pressable>
       </View>
     </KeyboardAvoidingView>
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     color: "#111",
     marginBottom: 8,
   },
-
   inputGroup: {
     marginBottom: 18,
   },
@@ -88,5 +87,16 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     fontSize: 18,
     color: "#111",
+  },
+  button: {
+    padding: 15,
+    backgroundColor: "#ad0000",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 15,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: "#fff",
   },
 });

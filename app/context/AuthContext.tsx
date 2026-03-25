@@ -4,8 +4,10 @@ import {
     ReactNode,
     useContext,
     useEffect,
+    useRef,
     useState,
 } from "react";
+import { AppState } from "react-native";
 
 interface AuthContextType {
   hasPin: boolean;
@@ -13,7 +15,6 @@ interface AuthContextType {
   isLoading: boolean;
   setPin: (pin: string) => Promise<void>;
   unlockWithPin: (pin: string) => Promise<boolean>;
-  lockApp: () => void;
   removePin: () => Promise<void>;
 }
 
@@ -25,6 +26,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [hasPin, setHasPin] = useState(false);
   const [isLocked, setIsLocked] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+
+  const appState = useRef(AppState.currentState);
 
   useEffect(() => {
     loadPin();
@@ -68,16 +71,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return false;
   }
 
-  function lockApp() {
-    if (!hasPin) return;
-    setIsLocked(true);
-  }
-
   async function removePin() {
     await SecureStore.deleteItemAsync(PIN_KEY);
     setHasPin(false);
     setIsLocked(false);
   }
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      const previousAppState = appState.current;
+
+      if (
+        hasPin &&
+        previousAppState === "active" &&
+        (nextAppState === "inactive" || nextAppState === "background")
+      ) {
+        setIsLocked(true);
+      }
+
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [hasPin]);
 
   return (
     <AuthContext.Provider
@@ -87,7 +105,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         setPin,
         unlockWithPin,
-        lockApp,
         removePin,
       }}
     >
