@@ -4,10 +4,8 @@ import {
     ReactNode,
     useContext,
     useEffect,
-    useRef,
     useState,
 } from "react";
-import { AppState } from "react-native";
 
 interface AuthContextType {
   hasPin: boolean;
@@ -16,6 +14,7 @@ interface AuthContextType {
   setPin: (pin: string) => Promise<void>;
   unlockWithPin: (pin: string) => Promise<boolean>;
   removePin: () => Promise<void>;
+  lockApp: () => void;
 }
 
 const PIN_KEY = "pin";
@@ -26,9 +25,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [hasPin, setHasPin] = useState(false);
   const [isLocked, setIsLocked] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-
-  const appState = useRef(AppState.currentState);
-  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     loadPin();
@@ -72,51 +68,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return false;
   }
 
+  function lockApp() {
+    setIsLocked(true);
+  }
+
   async function removePin() {
     await SecureStore.deleteItemAsync(PIN_KEY);
     setHasPin(false);
     setIsLocked(false);
   }
-
-  useEffect(() => {
-    const changeSubscription = AppState.addEventListener(
-      "change",
-      (nextAppState) => {
-        const previousAppState = appState.current;
-
-        if (
-          hasPin &&
-          previousAppState === "active" &&
-          (nextAppState === "inactive" || nextAppState === "background")
-        )
-          setIsLocked(true);
-
-        appState.current = nextAppState;
-      },
-    );
-
-    const blurSubscription = AppState.addEventListener("blur", () => {
-      blurTimeoutRef.current = setTimeout(
-        () => {
-          setIsLocked(true);
-        },
-        3 * 60 * 1000,
-      );
-    });
-
-    const focusSubscription = AppState.addEventListener("focus", () => {
-      if (blurTimeoutRef.current) {
-        clearTimeout(blurTimeoutRef.current);
-        blurTimeoutRef.current = null;
-      }
-    });
-
-    return () => {
-      changeSubscription.remove();
-      blurSubscription.remove();
-      focusSubscription.remove();
-    };
-  }, [hasPin]);
 
   return (
     <AuthContext.Provider
@@ -127,6 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setPin,
         unlockWithPin,
         removePin,
+        lockApp,
       }}
     >
       {children}
