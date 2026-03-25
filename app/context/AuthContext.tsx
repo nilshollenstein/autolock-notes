@@ -28,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const appState = useRef(AppState.currentState);
+  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     loadPin();
@@ -78,22 +79,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      const previousAppState = appState.current;
+    const changeSubscription = AppState.addEventListener(
+      "change",
+      (nextAppState) => {
+        const previousAppState = appState.current;
 
-      if (
-        hasPin &&
-        previousAppState === "active" &&
-        (nextAppState === "inactive" || nextAppState === "background")
-      ) {
-        setIsLocked(true);
+        if (
+          hasPin &&
+          previousAppState === "active" &&
+          (nextAppState === "inactive" || nextAppState === "background")
+        )
+          setIsLocked(true);
+
+        appState.current = nextAppState;
+      },
+    );
+
+    const blurSubscription = AppState.addEventListener("blur", () => {
+      blurTimeoutRef.current = setTimeout(
+        () => {
+          setIsLocked(true);
+        },
+        3 * 60 * 1000,
+      );
+    });
+
+    const focusSubscription = AppState.addEventListener("focus", () => {
+      if (blurTimeoutRef.current) {
+        clearTimeout(blurTimeoutRef.current);
+        blurTimeoutRef.current = null;
       }
-
-      appState.current = nextAppState;
     });
 
     return () => {
-      subscription.remove();
+      changeSubscription.remove();
+      blurSubscription.remove();
+      focusSubscription.remove();
     };
   }, [hasPin]);
 
