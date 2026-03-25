@@ -1,6 +1,15 @@
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as Crypto from "expo-crypto";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import Note from "../models/note";
+
+const noteStorage = useAsyncStorage("notes");
 
 interface NoteContextType {
   noteList: Note[];
@@ -33,6 +42,40 @@ export function NoteProvider({ children }: { children: ReactNode }) {
   function removeNote(id: string) {
     setNoteList((prev) => prev.filter((prevNote) => prevNote.id !== id));
   }
+
+  async function loadNotesFromStorage() {
+    let jsonFromStorage = await noteStorage.getItem();
+    if (jsonFromStorage == null) {
+      return;
+    }
+    try {
+      var list: Note[] = JSON.parse(jsonFromStorage);
+      if (list) setNoteList(list);
+      return;
+    } catch {
+      console.log("Error beim laden der Daten");
+      return;
+    }
+  }
+
+  async function saveNotesInStorage() {
+    if (!noteList || noteList.length === 0) return;
+    let jsonList = JSON.stringify(noteList);
+    try {
+      await noteStorage.setItem(jsonList);
+      console.log("Vocis gespeichert");
+    } catch (err) {
+      console.log("Fehler beim Speichern der Liste", err);
+    }
+  }
+
+  useEffect(() => {
+    loadNotesFromStorage();
+  }, []);
+
+  useEffect(() => {
+    saveNotesInStorage();
+  }, [noteList]);
 
   return (
     <VociContext.Provider value={{ noteList, saveNote, removeNote }}>
