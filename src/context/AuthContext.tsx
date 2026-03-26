@@ -68,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   function lockApp() {
+    console.log("Locked");
     setIsLocked(true);
   }
 

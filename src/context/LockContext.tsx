@@ -2,6 +2,7 @@ import { Accelerometer } from "expo-sensors";
 import { createContext, ReactNode, useContext, useEffect, useRef } from "react";
 import { AppState, AppStateStatus } from "react-native";
 import {
+  BLUR_TIMEOUT_MS,
   INACTIVITY_TIMEOUT_MS,
   MOVEMENT_THRESHOLD,
   UPDATE_INTERVAL_MS,
@@ -33,17 +34,11 @@ export function LockProvider({ children }: { children: ReactNode }) {
     const changeSubscription = AppState.addEventListener(
       "change",
       (nextAppState) => {
-        const previousAppState = appState.current;
+        appState.current = nextAppState;
 
-        if (
-          hasPin &&
-          previousAppState === "active" &&
-          (nextAppState === "inactive" || nextAppState === "background")
-        ) {
+        if (hasPin && nextAppState !== "active") {
           lockApp();
         }
-
-        appState.current = nextAppState;
       },
     );
 
@@ -56,7 +51,7 @@ export function LockProvider({ children }: { children: ReactNode }) {
 
       blurTimeout.current = setTimeout(() => {
         lockApp();
-      }, INACTIVITY_TIMEOUT_MS);
+      }, BLUR_TIMEOUT_MS);
     });
 
     const focusSubscription = AppState.addEventListener("focus", () => {

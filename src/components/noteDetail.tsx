@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#000",
     paddingTop: 12,
+    marginBottom: 10,
     minHeight: 200,
   },
 });
