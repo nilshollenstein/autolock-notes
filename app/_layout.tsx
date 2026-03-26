@@ -1,12 +1,13 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
-import { View } from "react-native";
-import { AuthProvider } from "./context/AuthContext";
+import { Pressable, StyleSheet, View } from "react-native";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import { LockProvider, useLock } from "./context/LockContext";
 import { NoteProvider } from "./context/noteContext";
 
 function AppShell() {
   const { markActivity } = useLock();
-
+  const { lockApp } = useAuth();
   return (
     <View
       style={{ flex: 1 }}
@@ -28,6 +29,15 @@ function AppShell() {
           name="index"
           options={{
             title: "Notes",
+            headerRight: () => (
+              <Pressable onPress={lockApp} style={styles.logoutButton}>
+                <Ionicons
+                  name="lock-closed-outline"
+                  color={"#fff"}
+                  size={30}
+                ></Ionicons>
+              </Pressable>
+            ),
           }}
         />
         <Stack.Screen
@@ -70,3 +80,9 @@ export default function RootLayout() {
     </AuthProvider>
   );
 }
+const styles = StyleSheet.create({
+  logoutButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+});
