@@ -7,10 +7,9 @@ interface LockContextType {
   markActivity: () => void;
 }
 
-const MOVEMENT_THRESHOLD = 0.15;
+const MOVEMENT_THRESHOLD = 0.12;
 const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000;
 const UPDATE_INTERVAL_MS = 500;
-const BLUR_TIMEOUT_MS = 3 * 60 * 1000;
 
 const LockContext = createContext<LockContextType | undefined>(undefined);
 
@@ -56,7 +55,7 @@ export function LockProvider({ children }: { children: ReactNode }) {
 
       blurTimeout.current = setTimeout(() => {
         lockApp();
-      }, BLUR_TIMEOUT_MS);
+      }, INACTIVITY_TIMEOUT_MS);
     });
 
     const focusSubscription = AppState.addEventListener("focus", () => {

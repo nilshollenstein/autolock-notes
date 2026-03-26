@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { DisplayNote } from "./components/listNoteElement";
-import { useAuth } from "./context/AuthContext";
-import { useNote } from "./context/noteContext";
+import { DisplayNote } from "../src/components/listNoteElement";
+import { useAuth } from "../src/context/AuthContext";
+import { useNote } from "../src/context/noteContext";
 
 export default function Index() {
   const noteList = useNote().noteList;

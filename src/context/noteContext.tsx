@@ -1,11 +1,11 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as Crypto from "expo-crypto";
 import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
 } from "react";
 import Note from "../models/note";
 

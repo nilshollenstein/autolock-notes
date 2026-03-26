@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useAuth } from "./context/AuthContext";
-import { useNote } from "./context/noteContext";
+import { useAuth } from "../src/context/AuthContext";
+import { useNote } from "../src/context/noteContext";
 
 export default function login() {
   const [pin, setPin] = useState<string>();

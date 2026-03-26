@@ -2,8 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, Pressable, View } from "react-native";
-import NoteDetail from "./components/noteDetail";
-import { useNote } from "./context/noteContext";
+import { NoteDetail } from "../src/components/noteDetail";
+import { useNote } from "../src/context/noteContext";
 
 export default function EditNote() {
   const navigation = useNavigation();

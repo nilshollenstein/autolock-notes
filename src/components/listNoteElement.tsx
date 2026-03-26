@@ -2,7 +2,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { useRouter } from "expo-router";
 import Note from "../models/note";
-
 interface DisplayNoteProps {
   note: Note;
 }

@@ -2,8 +2,8 @@ import * as Crypto from "expo-crypto";
 import { useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
-import NoteDetail from "./components/noteDetail";
-import { useNote } from "./context/noteContext";
+import { NoteDetail } from "../src/components/noteDetail";
+import { useNote } from "../src/context/noteContext";
 
 export default function AddNote() {
   const navigation = useNavigation();

@@ -7,7 +7,7 @@ interface NoteDetailProps {
   onTextChange: (value: string) => void;
 }
 
-export default function NoteDetail({
+export function NoteDetail({
   title,
   text,
   onTitleChange,

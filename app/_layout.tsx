@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
-import { AuthProvider, useAuth } from "./context/AuthContext";
-import { LockProvider, useLock } from "./context/LockContext";
-import { NoteProvider } from "./context/noteContext";
+import { AuthProvider, useAuth } from "../src/context/AuthContext";
+import { LockProvider, useLock } from "../src/context/LockContext";
+import { NoteProvider } from "../src/context/noteContext";
 
 function AppShell() {
   const { markActivity } = useLock();
