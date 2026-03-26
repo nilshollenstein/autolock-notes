@@ -10,10 +10,12 @@ import {
   View,
 } from "react-native";
 import { useAuth } from "./context/AuthContext";
+import { useNote } from "./context/noteContext";
 
 export default function login() {
   const [pin, setPin] = useState<string>();
-  const authContext = useAuth();
+  const { unlockWithPin, removePin } = useAuth();
+  const { clearNotes } = useNote();
   const router = useRouter();
 
   async function login() {
@@ -21,11 +23,36 @@ export default function login() {
       Alert.alert("Please enter a Pin");
       return;
     }
-    let isLoggedIn = await authContext.unlockWithPin(pin);
+    let isLoggedIn = await unlockWithPin(pin);
     if (isLoggedIn) {
       router.replace("/");
       return;
     }
+  }
+
+  async function reset() {
+    Alert.alert(
+      "Reset Pin?",
+      "Warning: If you Reset the PIN, all Notes get deleted for Security Reasons",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => {
+            resetPin();
+          },
+        },
+      ],
+    );
+  }
+
+  async function resetPin() {
+    await removePin();
+    clearNotes();
+    router.replace("/");
   }
 
   return (
@@ -48,6 +75,9 @@ export default function login() {
 
         <TouchableOpacity style={styles.button} onPress={login}>
           <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.resetButton} onPress={reset}>
+          <Text style={styles.resetButtonText}>Reset Pin</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -94,6 +124,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 15,
+    marginVertical: 18,
+  },
+  resetButton: {
+    alignSelf: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginTop: 4,
+  },
+  resetButtonText: {
+    fontSize: 15,
+    color: "#666",
   },
   buttonText: {
     fontSize: 20,

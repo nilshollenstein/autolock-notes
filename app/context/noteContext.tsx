@@ -15,6 +15,7 @@ interface NoteContextType {
   noteList: Note[];
   saveNote: (note: Note) => void;
   removeNote: (id: string) => void;
+  clearNotes: () => void;
 }
 
 const NoteContext = createContext<NoteContextType | undefined>(undefined);
@@ -41,6 +42,10 @@ export function NoteProvider({ children }: { children: ReactNode }) {
 
   function removeNote(id: string) {
     setNoteList((prev) => prev.filter((prevNote) => prevNote.id !== id));
+  }
+
+  function clearNotes() {
+    setNoteList([]);
   }
 
   async function loadNotesFromStorage() {
@@ -78,7 +83,9 @@ export function NoteProvider({ children }: { children: ReactNode }) {
   }, [noteList]);
 
   return (
-    <NoteContext.Provider value={{ noteList, saveNote, removeNote }}>
+    <NoteContext.Provider
+      value={{ noteList, saveNote, removeNote, clearNotes }}
+    >
       {children}
     </NoteContext.Provider>
   );

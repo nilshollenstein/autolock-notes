@@ -1,10 +1,10 @@
 import * as SecureStore from "expo-secure-store";
 import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 
 interface AuthContextType {
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function removePin() {
     await SecureStore.deleteItemAsync(PIN_KEY);
     setHasPin(false);
-    setIsLocked(false);
+    setIsLocked(true);
   }
 
   return (
