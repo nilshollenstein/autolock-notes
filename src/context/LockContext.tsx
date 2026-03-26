@@ -1,12 +1,7 @@
 import { Accelerometer } from "expo-sensors";
 import { createContext, ReactNode, useContext, useEffect, useRef } from "react";
 import { AppState, AppStateStatus } from "react-native";
-import {
-  BLUR_TIMEOUT_MS,
-  INACTIVITY_TIMEOUT_MS,
-  MOVEMENT_THRESHOLD,
-  UPDATE_INTERVAL_MS,
-} from "../config";
+import { LOCK_CONFIG } from "../config";
 import { useAuth } from "./AuthContext";
 
 interface LockContextType {
@@ -51,7 +46,7 @@ export function LockProvider({ children }: { children: ReactNode }) {
 
       blurTimeout.current = setTimeout(() => {
         lockApp();
-      }, BLUR_TIMEOUT_MS);
+      }, LOCK_CONFIG.BLUR_TIMEOUT_MS);
     });
 
     const focusSubscription = AppState.addEventListener("focus", () => {
@@ -78,7 +73,7 @@ export function LockProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!hasPin || isLocked) return;
 
-    Accelerometer.setUpdateInterval(UPDATE_INTERVAL_MS);
+    Accelerometer.setUpdateInterval(LOCK_CONFIG.UPDATE_INTERVAL_MS);
     lastActivityAtRef.current = Date.now();
     lastReadingRef.current = null;
 
@@ -91,9 +86,9 @@ export function LockProvider({ children }: { children: ReactNode }) {
         const deltaZ = Math.abs(data.z - lastReading.z);
 
         const hasMovement =
-          deltaX > MOVEMENT_THRESHOLD ||
-          deltaY > MOVEMENT_THRESHOLD ||
-          deltaZ > MOVEMENT_THRESHOLD;
+          deltaX > LOCK_CONFIG.MOVEMENT_THRESHOLD ||
+          deltaY > LOCK_CONFIG.MOVEMENT_THRESHOLD ||
+          deltaZ > LOCK_CONFIG.MOVEMENT_THRESHOLD;
 
         if (hasMovement) {
           markActivity();
@@ -110,7 +105,7 @@ export function LockProvider({ children }: { children: ReactNode }) {
     const interval = setInterval(() => {
       const inactiveFor = Date.now() - lastActivityAtRef.current;
 
-      if (inactiveFor > INACTIVITY_TIMEOUT_MS) {
+      if (inactiveFor > LOCK_CONFIG.INACTIVITY_TIMEOUT_MS) {
         lockApp();
       }
     }, 1000);
