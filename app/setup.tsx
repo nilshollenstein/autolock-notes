@@ -1,13 +1,13 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
-    Alert,
-    KeyboardAvoidingView,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  Alert,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useAuth } from "./context/AuthContext";
 
@@ -71,9 +71,9 @@ export default function Setup() {
           />
         </View>
 
-        <Pressable style={styles.button} onPress={handlePinSave}>
+        <TouchableOpacity style={styles.button} onPress={handlePinSave}>
           <Text style={styles.buttonText}>Save</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
