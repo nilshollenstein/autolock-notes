@@ -16,10 +16,11 @@ interface NoteContextType {
   clearNotes: () => void;
 }
 
-const noteStorage = useAsyncStorage("notes");
 const NoteContext = createContext<NoteContextType | undefined>(undefined);
 
 export function NoteProvider({ children }: { children: ReactNode }) {
+  const noteStorage = useAsyncStorage("notes");
+
   let [noteList, setNoteList] = useState<Note[]>([
     {
       id: Crypto.randomUUID(),
@@ -63,7 +64,7 @@ export function NoteProvider({ children }: { children: ReactNode }) {
   }
 
   async function saveNotesInStorage() {
-    if (!noteList || noteList.length === 0) return;
+    if (!noteList) return;
     let jsonList = JSON.stringify(noteList);
     try {
       await noteStorage.setItem(jsonList);
