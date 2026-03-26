@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { PIN_STORAGE_KEY } from "../config";
 
 interface AuthContextType {
   hasPin: boolean;
@@ -16,8 +17,6 @@ interface AuthContextType {
   removePin: () => Promise<void>;
   lockApp: () => void;
 }
-
-const PIN_KEY = "pin";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -32,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function loadPin() {
     try {
-      const storedPin = await SecureStore.getItemAsync(PIN_KEY);
+      const storedPin = await SecureStore.getItemAsync(PIN_STORAGE_KEY);
 
       if (storedPin !== null) {
         setHasPin(true);
@@ -51,14 +50,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function setPin(pin: string) {
-    await SecureStore.setItemAsync(PIN_KEY, pin);
+    await SecureStore.setItemAsync(PIN_STORAGE_KEY, pin);
     setHasPin(true);
   }
 
   async function unlockWithPin(pin: string): Promise<boolean> {
     if (!hasPin) return false;
 
-    const storedPin = await SecureStore.getItemAsync(PIN_KEY);
+    const storedPin = await SecureStore.getItemAsync(PIN_STORAGE_KEY);
 
     if (storedPin === pin) {
       setIsLocked(false);
@@ -73,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function removePin() {
-    await SecureStore.deleteItemAsync(PIN_KEY);
+    await SecureStore.deleteItemAsync(PIN_STORAGE_KEY);
     setHasPin(false);
     setIsLocked(true);
   }

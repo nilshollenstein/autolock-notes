@@ -1,15 +1,16 @@
 import { Accelerometer } from "expo-sensors";
 import { createContext, ReactNode, useContext, useEffect, useRef } from "react";
 import { AppState, AppStateStatus } from "react-native";
+import {
+  INACTIVITY_TIMEOUT_MS,
+  MOVEMENT_THRESHOLD,
+  UPDATE_INTERVAL_MS,
+} from "../config";
 import { useAuth } from "./AuthContext";
 
 interface LockContextType {
   markActivity: () => void;
 }
-
-const MOVEMENT_THRESHOLD = 0.12;
-const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000;
-const UPDATE_INTERVAL_MS = 500;
 
 const LockContext = createContext<LockContextType | undefined>(undefined);
 

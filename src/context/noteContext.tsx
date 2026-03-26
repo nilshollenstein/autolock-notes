@@ -1,15 +1,13 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import * as Crypto from "expo-crypto";
 import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 import Note from "../models/note";
-
-const noteStorage = useAsyncStorage("notes");
 
 interface NoteContextType {
   noteList: Note[];
@@ -18,6 +16,7 @@ interface NoteContextType {
   clearNotes: () => void;
 }
 
+const noteStorage = useAsyncStorage("notes");
 const NoteContext = createContext<NoteContextType | undefined>(undefined);
 
 export function NoteProvider({ children }: { children: ReactNode }) {
